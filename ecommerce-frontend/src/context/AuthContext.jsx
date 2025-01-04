@@ -19,7 +19,24 @@ export function AuthProvider({ children }) {
         email,
         password,
       })
+      const { token, user } = res.data
+      localStorage.setItem('user', JSON.stringify(user))
+      localStorage.setItem('token', token)
+      setUser(user)
+      return true
+    } catch (err) {
+      console.error(err)
+      return false
+    }
+  }
 
+  const register = async (name, email, password) => {
+    try {
+      const res = await axios.post('http://localhost:5000/api/auth/register', {
+        name,
+        email,
+        password,
+      })
       const { token, user } = res.data
       localStorage.setItem('user', JSON.stringify(user))
       localStorage.setItem('token', token)
@@ -40,10 +57,9 @@ export function AuthProvider({ children }) {
   useEffect(() => {
     console.log('User loaded from context:', user)
   }, [user])
-  
 
   return (
-    <AuthContext.Provider value={{ user, login, logout }}>
+    <AuthContext.Provider value={{ user, login, register, logout }}>
       {children}
     </AuthContext.Provider>
   )
