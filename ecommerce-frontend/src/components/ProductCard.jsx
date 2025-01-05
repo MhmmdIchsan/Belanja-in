@@ -1,22 +1,51 @@
-import React from 'react'
-import { useCart } from '../context/CartContext'
+import React from "react";
+import { Link } from "react-router-dom";
 
-const ProductCard = ({ product }) => {
-  const { addToCart } = useCart()
+const ProductCard = ({ product, onAdd }) => {
+  // Format harga ke format Rupiah
+  const formatRupiah = (angka) => {
+    return new Intl.NumberFormat("id-ID", {
+      style: "currency",
+      currency: "IDR",
+    }).format(angka);
+  };
 
   return (
-    <div className="bg-white rounded-xl shadow p-4">
-      <img src={product.image} alt={product.name} className="h-40 w-full object-cover rounded" />
-      <h3 className="mt-2 text-lg font-semibold">{product.name}</h3>
-      <p className="text-gray-600">${product.price}</p>
-      <button
-        onClick={() => addToCart(product)}
-        className="mt-3 bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700"
-      >
-        Add to Cart
-      </button>
+    <div className="bg-white shadow-md rounded-2xl overflow-hidden flex flex-col hover:shadow-lg transition-shadow duration-300">
+      <img
+        src={product.image}
+        alt={product.name}
+        className="w-full h-48 object-cover"
+      />
+      <div className="p-6 flex flex-col flex-1 justify-between">
+        <div>
+          <h2 className="text-xl font-semibold text-gray-900 mb-2">
+            {product.name}
+          </h2>
+          <p className="text-gray-600 text-sm mb-4">{product.description}</p>
+        </div>
+        <div className="mt-auto">
+          <p className="text-lg font-bold text-gray-900 mb-4">
+            {formatRupiah(product.price)}
+          </p>
+          <div className="flex gap-4">
+            <Link
+              to={`/product/${product.id}`} // Mengarahkan ke halaman detail produk
+              className="w-full bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded-lg transition duration-200"
+            >
+              Lihat
+            </Link>
+            <button
+              onClick={() => onAdd(product)}
+              className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition duration-200"
+            >
+              Tambah
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
-  )
-}
+  );
+};
 
-export default ProductCard
+export default ProductCard;
