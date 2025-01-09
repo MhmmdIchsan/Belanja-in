@@ -29,8 +29,9 @@ const ProductCard = ({ product, onAdd }) => {
             {formatRupiah(product.price)}
           </p>
           <div className="flex gap-4">
+            {/* Update the Link to go to the product detail page based on the product's ID */}
             <Link
-              to={`/product/${product.id}`} // Mengarahkan ke halaman detail produk
+              to={`/product/${product._id}`} // Navigate to /product/:id, where :id is the product's unique _id
               className="w-full bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded-lg transition duration-200"
             >
               Lihat
