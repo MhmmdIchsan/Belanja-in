@@ -1,14 +1,29 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import ProductCard from "./ProductCard";
-import products from "../data/products";
 import NoResultsComponent from "./NoResultsComponent";
 
 const ProductSection = ({ categories }) => {
+  const [products, setProducts] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("");
   const [sortOption, setSortOption] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const productsPerPage = 8; // Jumlah produk yang ditampilkan per halaman
+
+  // Fetch products from the backend API
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const response = await axios.get("http://localhost:5000/api/products");
+        setProducts(response.data);
+      } catch (err) {
+        console.error("Error fetching products:", err);
+      }
+    };
+
+    fetchProducts();
+  }, []);
 
   // Filter produk berdasarkan kategori dan pencarian
   const filteredProducts = products
@@ -93,7 +108,7 @@ const ProductSection = ({ categories }) => {
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {currentProducts.length > 0 ? (
           currentProducts.map((product) => (
-            <ProductCard key={product.id} product={product} />
+            <ProductCard key={product._id} product={product} />
           ))
         ) : (
           <div className="col-span-full">
