@@ -1,17 +1,17 @@
 const banners = [
     {
       id: 1,
-      image: 'https://via.placeholder.com/1200x400?text=Welcome+to+Belanja-in',
+      image: '/src/assets/banner-1.png',
       alt: 'Welcome banner',
     },
     {
       id: 2,
-      image: 'https://via.placeholder.com/1200x400?text=Big+Sale+Up+To+50%25',
+      image: '/src/assets/banner-2.png',
       alt: 'Big Sale',
     },
     {
       id: 3,
-      image: 'https://via.placeholder.com/1200x400?text=New+Arrivals',
+      image: '/src/assets/banner-3.png',
       alt: 'New Arrivals',
     },
   ]
