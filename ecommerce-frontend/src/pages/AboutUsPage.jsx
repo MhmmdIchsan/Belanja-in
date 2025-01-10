@@ -23,9 +23,9 @@ const AboutUsPage = () => {
 
           {/* Logo Aplikasi */}
           <motion.img
-            src="https://via.placeholder.com/150" // Ganti dengan logo aplikasi Anda
+            src="/src/assets/logo-full.png" // Ganti dengan logo aplikasi Anda
             alt="Logo Aplikasi"
-            className="mb-6 w-32 h-32 object-contain"
+            className="mb-6 w-64 h-64 rounded-4xl object-contain"
             variants={fadeIn}
             initial="hidden"
             animate="visible"
