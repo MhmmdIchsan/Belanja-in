@@ -1,8 +1,11 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { useCart } from "../context/CartContext"; // Import useCart dari context
 
-const ProductCard = ({ product, onAdd }) => {
-  // Format harga ke format Rupiah
+const ProductCard = ({ product }) => {
+  const { addToCart } = useCart(); // Mengambil fungsi addToCart dari context
+
+  // Format harga ke Rupiah
   const formatRupiah = (angka) => {
     return new Intl.NumberFormat("id-ID", {
       style: "currency",
@@ -19,25 +22,23 @@ const ProductCard = ({ product, onAdd }) => {
       />
       <div className="p-6 flex flex-col flex-1 justify-between">
         <div>
-          <h2 className="text-xl font-semibold text-gray-900 mb-2">
+          <h2 className="text-xl font-semibold text-gray-900 mb-4">
             {product.name}
           </h2>
-          <p className="text-gray-600 text-sm mb-4">{product.description}</p>
         </div>
         <div className="mt-auto">
           <p className="text-lg font-bold text-gray-900 mb-4">
-            {formatRupiah(product.price)}
+            {formatRupiah(product.price || product.variations?.[0]?.price || 0)}
           </p>
           <div className="flex gap-4">
-            {/* Update the Link to go to the product detail page based on the product's ID */}
             <Link
-              to={`/product/${product._id}`} // Navigate to /product/:id, where :id is the product's unique _id
-              className="w-full bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded-lg transition duration-200"
+              to={`/product/${product._id}`}
+              className="w-full bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded-lg transition duration-200 text-center"
             >
               Lihat
             </Link>
             <button
-              onClick={() => onAdd(product)}
+              onClick={() => addToCart(product)} // Menambahkan produk ke keranjang
               className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition duration-200"
             >
               Tambah
