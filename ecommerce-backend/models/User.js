@@ -1,43 +1,50 @@
-const mongoose = require('mongoose')
-const bcrypt = require('bcryptjs')
+const mongoose = require("mongoose");
+const bcrypt = require("bcryptjs");
 
 const userSchema = new mongoose.Schema(
   {
     name: {
       type: String,
-      required: [true, 'Nama wajib diisi'],
+      required: true,
       trim: true,
     },
     email: {
       type: String,
-      required: [true, 'Email wajib diisi'],
+      required: true,
       unique: true,
       lowercase: true,
       trim: true,
     },
     password: {
       type: String,
-      required: [true, 'Password wajib diisi'],
-      minlength: [6, 'Password minimal 6 karakter'],
+      required: true,
+      minlength: 6,
+    },
+    phone: {
+      type: String,
+    },
+    address: {
+      type: String,
+    },
+    role: {
+      type: String,
+      enum: ["user", "admin"],
+      default: "user",
     },
   },
-  {
-    timestamps: true,
-  }
-)
+  { timestamps: true }
+);
 
-// 🔐 Hash password sebelum disimpan
-userSchema.pre('save', async function (next) {
-  if (!this.isModified('password')) return next()
+// Hash password before saving
+userSchema.pre("save", async function (next) {
+  if (!this.isModified("password")) return next();
+  this.password = await bcrypt.hash(this.password, 10);
+  next();
+});
 
-  const salt = await bcrypt.genSalt(10)
-  this.password = await bcrypt.hash(this.password, salt)
-  next()
-})
+// Method to compare password
+userSchema.methods.matchPassword = async function (enteredPassword) {
+  return await bcrypt.compare(enteredPassword, this.password);
+};
 
-// 🔍 Metode membandingkan password saat login
-userSchema.methods.matchPassword = function (enteredPassword) {
-  return bcrypt.compare(enteredPassword, this.password)
-}
-
-module.exports = mongoose.model('User', userSchema)
+module.exports = mongoose.model("User", userSchema);
