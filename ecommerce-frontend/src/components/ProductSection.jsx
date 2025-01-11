@@ -28,7 +28,7 @@ const ProductSection = ({ categories }) => {
   // Filter produk berdasarkan kategori dan pencarian
   const filteredProducts = products
     .filter((product) =>
-      selectedCategory ? product.category === selectedCategory : true
+      selectedCategory ? product.category._id === selectedCategory : true
     )
     .filter((product) =>
       product.name.toLowerCase().includes(searchTerm.toLowerCase())
@@ -38,8 +38,8 @@ const ProductSection = ({ categories }) => {
   const sortedProducts = filteredProducts.sort((a, b) => {
     if (sortOption === "priceAsc") return a.price - b.price;
     if (sortOption === "priceDesc") return b.price - a.price;
-    if (sortOption === "ratingDesc") return b.rating - a.rating;
-    if (sortOption === "ratingAsc") return a.rating - b.rating;
+    if (sortOption === "ratingDesc") return b.averageRating - a.averageRating;
+    if (sortOption === "ratingAsc") return a.averageRating - b.averageRating;
     return 0;
   });
 
@@ -69,7 +69,7 @@ const ProductSection = ({ categories }) => {
           >
             <option value="">Semua</option>
             {categories.map((cat, index) => (
-              <option key={index} value={cat.name}>
+              <option key={index} value={cat._id}>
                 {cat.name}
               </option>
             ))}
