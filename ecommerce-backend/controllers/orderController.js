@@ -111,4 +111,15 @@ const updateOrderStatusToPaid = async (req, res) => {
   }
 };
 
-module.exports = { createOrder, getOrders, getOrderById, updateOrderStatus, updateOrderStatusToPaid };
+const getMyOrders = async (req, res) => {
+  try {
+    const orders = await Order.find({ user: req.user._id }).sort({ createdAt: -1 }).populate("items.product");
+    res.status(200).json({ orders });
+  } catch (err) {
+    console.error("Gagal mengambil pesanan saya:", err);
+    res.status(500).json({ message: "Gagal mengambil pesanan saya" });
+  }
+};
+
+
+module.exports = { createOrder, getOrders, getOrderById, updateOrderStatus, updateOrderStatusToPaid, getMyOrders };
