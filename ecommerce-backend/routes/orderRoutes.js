@@ -6,6 +6,7 @@ const {
   getOrderById,
   updateOrderStatus,
   updateOrderStatusToPaid,
+  getMyOrders
 } = require("../controllers/orderController");
 const { protect } = require("../middleware/authMiddleware");
 
@@ -25,6 +26,9 @@ router.get("/:id", protect, getOrderById);
 router.put("/:id/status", protect, updateOrderStatus);
 
 // Mengupdate status pesanan menjadi "paid"
-router.put("/:id/pay", protect, updateOrderStatusToPaid); // Update status pesanan menjadi "paid"
+router.put("/:id/pay", protect, updateOrderStatusToPaid);
+
+// Ambil pesanan milik user login
+router.get("/myorders", protect, getMyOrders);
 
 module.exports = router;
