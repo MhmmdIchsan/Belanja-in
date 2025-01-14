@@ -9,6 +9,7 @@ import ProductDetailPage from "./pages/ProductDetailPage";
 import CartPage from "./pages/CartPage";
 import ProfilePage from "./pages/ProfilePage";
 import AboutUsPage from "./pages/AboutUsPage";
+import MyOrdersPage from "./pages/MyOrdersPage";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Footer from "./components/Footer";
@@ -23,6 +24,7 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/cart" element={<CartPage />} />
             <Route path="/product/:id" element={<ProductDetailPage />} />
+            <Route path="/orders" element={<MyOrdersPage />} />
             <Route path="/profile" element={<ProfilePage />} />
             <Route path="/about-us" element={<AboutUsPage />} />
             <Route path="/login" element={<Login />} />
