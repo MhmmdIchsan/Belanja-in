@@ -1,14 +1,15 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import { FiShoppingCart, FiMenu, FiX } from 'react-icons/fi'
-import { FaUserAlt } from 'react-icons/fa' // Ganti dengan ikon profile yang lebih menarik
+import { FaUserAlt } from 'react-icons/fa'
 
 const Navbar = () => {
   const { user, logout } = useAuth()
   const navigate = useNavigate()
   const [isOpen, setIsOpen] = useState(false)
   const [dropdownOpen, setDropdownOpen] = useState(false)
+  const dropdownRef = useRef(null)
 
   const handleLogout = () => {
     logout()
@@ -19,12 +20,23 @@ const Navbar = () => {
     setDropdownOpen(!dropdownOpen)
   }
 
+  // Close dropdown if clicking outside of it
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setDropdownOpen(false)
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [])
+
   return (
     <nav className="bg-gray-800 text-white shadow-md z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           <Link to="/" className="flex items-center space-x-2">
-            {/* Logo Placeholder */}
             <img src="/src/assets/logo.png" alt="Logo" className="h-8 w-8 rounded-full" />
             <span className="text-xl font-bold text-white">Belanja-in</span>
           </Link>
@@ -44,15 +56,19 @@ const Navbar = () => {
                     onClick={toggleDropdown}
                     className="text-gray-300 hover:text-gray-400 focus:outline-none"
                   >
-                    <FaUserAlt size={24} /> {/* Ganti dengan ikon Profile yang lebih menarik */}
+                    <FaUserAlt size={24} />
                   </button>
                   {dropdownOpen && (
-                    <div className="absolute right-0 mt-2 w-48 bg-white text-gray-800 rounded-lg shadow-lg z-50">
+                    <div
+                      ref={dropdownRef}
+                      className="absolute right-0 mt-2 w-48 bg-white text-gray-800 rounded-lg shadow-lg z-50 transition-all duration-300 ease-in-out transform"
+                    >
                       <ul>
                         <li>
                           <Link
                             to="/profile"
                             className="block px-4 py-2 hover:bg-gray-200"
+                            onClick={() => setDropdownOpen(false)}
                           >
                             Profil Saya
                           </Link>
@@ -61,6 +77,7 @@ const Navbar = () => {
                           <Link
                             to="/orders"
                             className="block px-4 py-2 hover:bg-gray-200"
+                            onClick={() => setDropdownOpen(false)}
                           >
                             Pesanan Saya
                           </Link>
@@ -69,6 +86,7 @@ const Navbar = () => {
                           <Link
                             to="/about-us"
                             className="block px-4 py-2 hover:bg-gray-200"
+                            onClick={() => setDropdownOpen(false)}
                           >
                             Tentang Kami
                           </Link>
